@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Progreso de Tareas</title>
+</head>
+<body>
+
+<div th:fragment="contenido">
+    <h2 class="mb-4">Seguimiento del Progreso</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Resumen de Progreso</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="display-4" th:text="${progreso.totalTareas}">10</h3>
+                                    <p class="text-muted">Total de Tareas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="display-4" th:text="${progreso.tareasCompletadas}">5</h3>
+                                    <p class="text-muted">Tareas Completadas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h3 class="display-4" th:text="${#numbers.formatDecimal(progreso.porcentajeCompletado, 0, 1) + '%'}">50.0%</h3>
+                                    <p class="text-muted">Porcentaje Completado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             th:style="'width: ' + ${progreso.porcentajeCompletado} + '%'" 
+                             th:aria-valuenow="${progreso.porcentajeCompletado}" 
+                             aria-valuemin="0" aria-valuemax="100" 
+                             th:text="${#numbers.formatDecimal(progreso.porcentajeCompletado, 0, 1) + '%'}">
+                            50%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <a th:href="@{/tareas/lista}" class="btn btn-primary">Ver Todas las Tareas</a>
+                <a th:href="@{/tareas/pendientes}" class="btn btn-secondary">Ver Tareas Pendientes</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Consejos de Productividad</h5>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Prioriza las tareas más importantes.</li>
+                        <li>Divide tareas grandes en subtareas más pequeñas.</li>
+                        <li>Establece plazos realistas para cada tarea.</li>
+                        <li>Toma descansos regulares para mantener la concentración.</li>
+                        <li>Celebra tus logros cuando completes tareas importantes.</li>
+                    </ul>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-lightbulb"></i> <strong>Consejo:</strong> Intenta completar primero las tareas de alta prioridad para reducir el estrés.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

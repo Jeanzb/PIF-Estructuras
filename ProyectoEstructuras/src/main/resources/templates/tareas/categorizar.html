@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorizar Tarea</title>
+</head>
+<body>
+
+<div th:fragment="contenido">
+    <h2 class="mb-4">Categorizar Tarea</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Seleccionar Categoría</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-secondary">
+                        <h5>Tarea: <span th:text="${tarea.nombre}">Nombre de la tarea</span></h5>
+                        <p>
+                            <strong>Fecha de entrega:</strong> <span th:text="${tarea.fechaEntrega}">01/01/2023</span><br>
+                            <strong>Prioridad:</strong> <span th:text="${tarea.obtenerPrioridadTexto()}">Media</span><br>
+                            <strong>Categoría actual:</strong> <span th:text="${tarea.categoria}">Sin categoría</span>
+                        </p>
+                    </div>
+                    
+                    <form th:action="@{/tareas/categorizar}" method="post">
+                        <input type="hidden" name="nombreTarea" th:value="${tarea.nombre}">
+                        
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <select class="form-select" id="categoria" name="categoria" required>
+                                <option value="Materias" th:selected="${tarea.categoria == 'Materias'}">Materias</option>
+                                <option value="Proyectos" th:selected="${tarea.categoria == 'Proyectos'}">Proyectos</option>
+                                <option value="Personales" th:selected="${tarea.categoria == 'Personales'}">Personales</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Guardar Categoría</button>
+                            <a th:href="@{/tareas/lista}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title mb-0">Información</h5>
+                </div>
+                <div class="card-body">
+                    <p>Seleccione una categoría para organizar mejor sus tareas.</p>
+                    <p><strong>Categorías disponibles:</strong></p>
+                    <ul>
+                        <li><strong>Materias:</strong> Tareas relacionadas con asignaturas académicas.</li>
+                        <li><strong>Proyectos:</strong> Tareas que forman parte de proyectos específicos.</li>
+                        <li><strong>Personales:</strong> Tareas de carácter personal o no relacionadas con estudios.</li>
+                    </ul>
+                    <p>Categorizar sus tareas le ayudará a organizarlas y filtrarlas más fácilmente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

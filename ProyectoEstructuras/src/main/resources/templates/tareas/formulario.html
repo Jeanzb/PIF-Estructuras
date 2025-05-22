@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Tarea</title>
+    <style>
+        /* Estilos para la animación de guardado */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
+
+        .toast-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .animate-toast {
+            animation: fadeInRight 0.5s ease-in-out;
+        }
+
+        /* Estilos para el fallback en caso de que bootstrap no esté disponible */
+        .toast.show {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .toast {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            border-radius: 0.25rem;
+            max-width: 350px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+<div th:fragment="contenido">
+    <h2 class="mb-4">Nueva Tarea</h2>
+
+    <!-- Toast para mostrar mensaje de éxito -->
+    <div class="toast-container">
+        <div id="tareaGuardadaToast" class="toast toast-success animate-toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <div class="toast-header">
+                <strong class="me-auto">Gestor de Tareas</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                ¡Tarea guardada con éxito!
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Formulario de Tarea</h5>
+                </div>
+                <div class="card-body">
+                    <form id="tareaForm" th:action="@{/tareas/nueva}" method="post">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre de la Tarea</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fechaEntrega" class="form-label">Fecha de Entrega</label>
+                            <input type="text" class="form-control" id="fechaEntrega" name="fechaEntrega" 
+                                   placeholder="DD/MM/AAAA" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="prioridad" class="form-label">Prioridad</label>
+                            <select class="form-select" id="prioridad" name="prioridad" required>
+                                <option value="1">Alta</option>
+                                <option value="2">Media</option>
+                                <option value="3">Baja</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción (opcional)</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" id="guardarTareaBtn" class="btn btn-primary">Guardar Tarea</button>
+                            <a th:href="@{/tareas/lista}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Información</h5>
+                </div>
+                <div class="card-body">
+                    <p>Complete el formulario para crear una nueva tarea.</p>
+                    <p><strong>Prioridad:</strong></p>
+                    <ul>
+                        <li><span class="badge bg-danger">Alta</span> - Tareas urgentes que requieren atención inmediata.</li>
+                        <li><span class="badge bg-warning">Media</span> - Tareas importantes pero no urgentes.</li>
+                        <li><span class="badge bg-info">Baja</span> - Tareas que pueden esperar.</li>
+                    </ul>
+                    <p>Después de crear la tarea, podrá categorizarla, editarla o marcarla como completada desde la lista de tareas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript para manejar la animación al guardar tarea -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener referencias a elementos del DOM
+        const tareaForm = document.getElementById('tareaForm');
+        const tareaGuardadaToast = document.getElementById('tareaGuardadaToast');
+
+        // Crear instancia de Toast de Bootstrap
+        let toast;
+        try {
+            // Verificar si Bootstrap está disponible
+            if (typeof bootstrap !== 'undefined') {
+                toast = new bootstrap.Toast(tareaGuardadaToast);
+            } else {
+                throw new Error('Bootstrap no está disponible');
+            }
+        } catch (error) {
+            console.error('Error al inicializar el toast:', error);
+            // Fallback en caso de que bootstrap no esté disponible
+            toast = {
+                show: function() {
+                    tareaGuardadaToast.classList.add('show');
+                    setTimeout(function() {
+                        tareaGuardadaToast.classList.remove('show');
+                    }, 3000);
+                }
+            };
+        }
+
+        // Manejar el evento de envío del formulario
+        tareaForm.addEventListener('submit', function(event) {
+            try {
+                // Prevenir el envío inmediato del formulario
+                event.preventDefault();
+
+                // Mostrar la animación de tarea guardada
+                toast.show();
+
+                // Esperar 1.5 segundos para que se vea la animación y luego enviar el formulario
+                setTimeout(function() {
+                    tareaForm.submit();
+                }, 1500);
+            } catch (error) {
+                console.error('Error al procesar el formulario:', error);
+                // En caso de error, asegurar que el formulario se envíe
+                tareaForm.submit();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

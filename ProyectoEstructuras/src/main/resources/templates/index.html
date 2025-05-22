@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Tareas</title>
+</head>
+<body>
+
+<div th:fragment="contenido">
+    <div class="jumbotron">
+        <h1 class="display-4">Bienvenido al Gestor de Tareas</h1>
+        <p class="lead">Una aplicación para gestionar tus tareas de manera eficiente.</p>
+        <hr class="my-4">
+        <p>Organiza tus tareas, establece prioridades y haz seguimiento de tu progreso.</p>
+        <div class="mt-4">
+            <a th:href="@{/tareas/lista}" class="btn btn-success btn-lg me-2">Ver Tareas</a>
+            <a th:href="@{/tareas/nueva}" class="btn btn-primary btn-lg">Nueva Tarea</a>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Gestión de Tareas</h5>
+                </div>
+                <div class="card-body">
+                    <p>Crea, edita y elimina tareas fácilmente. Establece fechas de entrega y prioridades.</p>
+                    <a th:href="@{/tareas/nueva}" class="btn btn-outline-primary">Nueva Tarea</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Organización</h5>
+                </div>
+                <div class="card-body">
+                    <p>Visualiza tus tareas organizadas por prioridad. Las tareas de alta prioridad aparecen primero.</p>
+                    <a th:href="@{/tareas/lista}" class="btn btn-outline-success">Ver Tareas Organizadas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Seguimiento</h5>
+                </div>
+                <div class="card-body">
+                    <p>Haz seguimiento de tu progreso. Visualiza estadísticas sobre tus tareas completadas y pendientes.</p>
+                    <a th:href="@{/tareas/progreso}" class="btn btn-outline-info">Ver Progreso</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
