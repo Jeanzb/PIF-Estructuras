@@ -32,3 +32,14 @@ Este es un sistema básico de gestión de tareas desarrollado con Java y Spring 
 
 ## 🗂️ Estructura del proyecto
 
+ProyectoEstructuras/
+├── src/main/java/com/example/proyectoestructuras/
+│ ├── controllers/ # Controladores MVC
+│ ├── models/ # Clases modelo (Tarea, Usuario)
+│ ├── services/ # Lógica de negocio
+│ └── ProyectoEstructurasApplication.java
+├── src/main/resources/
+│ ├── templates/ # Vistas Thymeleaf
+│ ├── static/js/ # Scripts JS
+│ └── application.properties # Configuración de la app
+└── pom.xml # Configuración Maven
